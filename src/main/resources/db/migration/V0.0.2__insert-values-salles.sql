@@ -1,4 +1,4 @@
-insert into salle (id, name, nbrplace, nbrwebcam, nbrtableau, nbrpieuvre, nbrecran)
+insert into salle (id, name, nb_place, nb_webcam, nb_tableau, nb_pieuvre, nb_ecran)
 values (1, 'E1001', 23, 0, 0, 0, 0),
        (2, 'E1002', 10, 0, 0, 0, 1),
        (3, 'E1003', 8, 0, 0, 1, 0),
@@ -11,6 +11,3 @@ values (1, 'E1001', 23, 0, 0, 0, 0),
        (10, 'E3002', 8, 0, 0, 0, 0),
        (11, 'E3003', 9, 0, 0, 1, 1),
        (12, 'E3004', 4, 0, 0, 0, 0);
-
-insert into equipement (id, nbrwebcamextern, nbrtableauextern, nbrpieuvreextern, nbrecranextern)
-values (1, 4, 2, 4, 5)

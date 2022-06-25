@@ -9,16 +9,13 @@ import javax.persistence.Id;
 
 @Entity
 @Data
-public class salle {
+public class Equipement {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String name;
-    private Integer nbrplace;
-    private Integer nbrwebcam;
-    private Integer nbrtableau;
-    private Integer nbrpieuvre;
-    private Integer nbrecran;
-
-
+    private Integer nbWebcam;
+    private Integer nbTableau;
+    private Integer nbPieuvre;
+    private Integer nbEcran;
 }

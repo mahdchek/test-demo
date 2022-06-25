@@ -7,10 +7,11 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
-public class searchSalle {
+public class ReunionDto {
+
     LocalDateTime startDate;
     LocalDateTime endDate;
-    Integer nbrPlace;
+    Integer nbPersonnes;
     String type;
 }
 

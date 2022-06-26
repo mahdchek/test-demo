@@ -13,6 +13,7 @@ import com.canalplus.meetingplanner.repositories.ReunionRepository;
 import com.canalplus.meetingplanner.repositories.SalleRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -74,7 +75,8 @@ public class ReservationService {
 
     public ReservationDTO reserver(ReunionDto reunionDto) throws ReservationException {
 
-        if (reunionDto.getStartDate().getHour() > 19 || reunionDto.getStartDate().getHour() < 8)
+        if (reunionDto.getStartDate().getHour() > 19 || reunionDto.getStartDate().getHour() < 8
+                || reunionDto.getStartDate().isBefore(LocalDateTime.now())|| reunionDto.getEndDate().isBefore(LocalDateTime.now()) )
             throw new ReservationException("Impossible de réserver dans ces horaires");
 
         if (ReunionType.RS == ReunionType.valueOf(reunionDto.getType())){
@@ -116,6 +118,10 @@ public class ReservationService {
                 .dateDebut(reunionDto.getStartDate())
                 .dateFin(reunionDto.getEndDate().plusHours(1L))
                 .typeReunion(ReunionType.valueOf(reunionDto.getType()))
+                .nbEcranExternes(0)
+                .nbPieuvreExternes(0)
+                .nbTableauExternes(0)
+                .nbWebCamExternes(0)
                 .build();
 
         List<Salle> sallesEquipees = checkEquipementSalle(sallesDispos, reunionDto.getType());
@@ -129,18 +135,18 @@ public class ReservationService {
             if (sallesEquipees.size() > 0) {
                 meilleureSalle = chercherMeilleureSalle(sallesEquipees);
                 Reunion reunion = reunionRepository.findByType(reunionDto.getType());
+                if(reunion.getNbPieuvre()>0)
                 reservation.setNbPieuvreExternes(reunion.getNbPieuvre() - meilleureSalle.getNbPieuvre());
+                if(reunion.getNbTableau()>0)
                 reservation.setNbTableauExternes(reunion.getNbTableau() - meilleureSalle.getNbTableau());
+                if(reunion.getNbEcran()>0)
                 reservation.setNbEcranExternes(reunion.getNbEcran() - meilleureSalle.getNbEcran());
+                if(reunion.getNbWebcam()>0)
                 reservation.setNbWebCamExternes(reunion.getNbWebcam() - meilleureSalle.getNbWebcam());
                 reservation.setSalle(meilleureSalle);
             }
         } else {
             meilleureSalle = chercherMeilleureSalle(sallesEquipees);
-            reservation.setNbPieuvreExternes(0);
-            reservation.setNbTableauExternes(0);
-            reservation.setNbEcranExternes(0);
-            reservation.setNbWebCamExternes(0);
             reservation.setSalle(meilleureSalle);
         }
 
